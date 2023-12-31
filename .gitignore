@@ -1,0 +1,8 @@
+# OS files
+*.DS_Store
+
+# log txt
+*log.txt
+
+# Model
+*.joblib
