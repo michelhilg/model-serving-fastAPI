@@ -9,3 +9,6 @@
 
 # PyCache
 *__pycache__
+
+# .env
+*.env

@@ -1,7 +1,13 @@
 from fastapi import FastAPI
-from app.views import router as predict_router 
+from app.views import router as predict_router
+import logging
 
 app = FastAPI()
-
-# Include routes from views
 app.include_router(predict_router)
+
+
+
+
+
+
+
