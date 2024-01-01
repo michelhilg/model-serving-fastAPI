@@ -33,8 +33,9 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
     Ou
 
     ```bash
-    conda create --name fastapi --file requirements.txt
+    conda create --name fastapi python=3.8
     conda activate fastapi
+    pip install -r requirements.txt
     ```
 
    Isso criará um ambiente Conda chamado `fastapi` com base nas especificações no arquivo `requirements.txt`.
@@ -68,7 +69,7 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
 
 ## Uso
 
-- **Para iniciar a API, execute o seguinte comando:**
+- **Para iniciar o APP, execute o seguinte comando:**
 
     ```bash
     uvicorn main:app --log-config log/log.ini
@@ -76,7 +77,17 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
 
     A API estará acessível no endereço descrito no arquivo `.env` para variável `BASE_URL`. Por padrão, o caminho definido é [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
-    Como a aplicação roda diretamente no Uvicorn, não é necessário passar outros comandos de na CLI para rodar em modo produção, apenas modificar as variáveis de acordo no arquivo `.env`.
+    Como a aplicação roda diretamente no Uvicorn, não é necessário passar outros comandos de na CLI para rodar em modo produção usando Uvicorn, apenas modificar as variáveis de acordo no arquivo `.env`.
+
+- **Para iniciar o APP, com uso do WSIG Gunicorn, execute o seguinte comando:**
+
+    Você pode usar o WSIG web-server Gunicorn com workers Uvicorn para ganhar mais velocidade em modo produção. Para isso, execute o seguinte comando:
+
+    ```bash
+    gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -og-config log/log.ini
+    ```
+    
+    A API estará acessível no endereço descrito no arquivo `.env` para variável `BASE_URL`. Por padrão, o caminho definido é [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
 ### Documentação
 
