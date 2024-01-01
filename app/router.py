@@ -22,6 +22,7 @@ def get_db():
              tags=["Predictions"], 
              description="Handle a .JSON body request to return a .JSON with AI prediction.")
 async def predict(features: schemas.Features, db: Session = Depends(get_db)):
+    
     """
     Make predictions based on the provided features.
 
