@@ -17,7 +17,6 @@ def get_db():
     finally:
         db.close()
 
-
 @router.post('/predict', response_model=schemas.PredictionResponse)
 async def predict(features: schemas.Features, db: Session = Depends(get_db)):
 
