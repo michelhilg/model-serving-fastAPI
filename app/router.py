@@ -17,8 +17,17 @@ def get_db():
     finally:
         db.close()
 
-@router.post('/predict', response_model=schemas.PredictionResponse)
+@router.post('/prediction', 
+             response_model=schemas.PredictionResponse, 
+             tags=["Predictions"], 
+             description="Handle a .JSON body request to return a .JSON with AI prediction.")
 async def predict(features: schemas.Features, db: Session = Depends(get_db)):
+    """
+    Make predictions based on the provided features.
+
+    :param features: Input features for prediction.
+    :return: Prediction response.
+    """
 
     current_time = datetime.datetime.now().isoformat()
     model = joblib.load(get_settings().path_model)
