@@ -9,3 +9,4 @@ class PredictionResponse(BaseModel):
 class Features(BaseModel):
     feature_1: float
     feature_2: float
+    

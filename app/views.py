@@ -1,49 +1,45 @@
-from fastapi import APIRouter, HTTPException
-from .api_models import Features, PredictionResponse
+from fastapi import Depends, APIRouter, HTTPException
 import datetime
-import pytz
 import joblib
 from config import get_settings
-from .extensions import setup_logging
-import logging
+from sqlalchemy.orm import Session
+from . import models, schemas
+from database.database import SessionLocal, engine
 
 router = APIRouter()
-logger = setup_logging(get_settings().log_path)
-last_id =1
 
-# Configure logging to save messages to a file
+models.Base.metadata.create_all(bind=engine)
 
-@router.post('/predict', response_model=PredictionResponse)
-async def predict(features: Features):
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router.post('/predict', response_model=schemas.PredictionResponse)
+async def predict(features: schemas.Features, db: Session = Depends(get_db)):
 
     current_time = datetime.datetime.now().isoformat()
     model = joblib.load(get_settings().path_model)
 
     try:
-        feature_1 = float(features.feature_1)
-        feature_2 = float(features.feature_2)
+        prediction = model.predict([[features.feature_1, features.feature_2]])[0]
 
-        prediction = model.predict([[feature_1, feature_2]])[0]
+        pred = models.Prediction(feature_1=features.feature_1, feature_2=features.feature_1, predicao=prediction)
+        db.add(pred)
+        db.commit()
 
         response = {
             "data": current_time,
             "predicao": round(prediction, 5),
-            "id": last_id
+            "id": pred.id
         }
 
-        # Saving the success log
-        logger.info(f"status: 200, id: {1}, feature_1: {feature_1}, feature_2: {feature_2}, predição: {prediction}")
-
         return response
-
-    except ValueError as ve:
-        # Handling value errors caused by invalid input data
-        error_message = f" Incorrect Value: {str(ve)}"
-        logger.error(f"status: 400, id: {last_id}, mensagem de erro: {error_message}")
-        raise HTTPException(status_code=400, detail={"error": error_message})
     
     except Exception as e:
         # Handling unexpected errors
         error_message = f"Unexpected error: {str(e)}"
-        logger.error(f"status: 500, id: {last_id}, mensagem de erro: {error_message}")
         raise HTTPException(status_code=500, detail={"error": error_message})
