@@ -2,7 +2,7 @@
 
 ## Descrição
 
-O ModelServingFastAPI é uma aplicação Python que utiliza o framework FastAPI e ASGI web-server Uvicorn para fornecer previsões com base em um modelo de aprendizado de máquina pré-treinado no formato .joblib. Esta aplicação utiliza um banco de dados SQLite local (arquivo .sqlite3) para armazenar informações das requisições, interagindo por meio de SQLAlchemy como ORM. A aplicação também registra os logs do server em um arquivo em formato .txt.
+O ModelServingFastAPI é uma aplicação Python que utiliza o framework FastAPI e ASGI web-server Uvicorn (ou Gunicorn com workers Uvicorn) para fornecer previsões com base em um modelo de aprendizado de máquina pré-treinado no formato .joblib `(1.1.0)` do tipo scikit-learn `(1.0.1)`. Esta aplicação utiliza um banco de dados SQLite local (arquivo .sqlite3) para armazenar informações das requisições, interagindo por meio de SQLAlchemy como ORM. A aplicação também registra os logs do server em um arquivo em formato .txt.
 
 ## Pré-requisitos
 
@@ -50,6 +50,7 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
     DB_URL = "sqlite:////path/to/your/database/file/db.sqlite3"
     LOG_PATH = "path/to/your/log/file/log.txt"
     PATH_MODEL = "path/to/your/model/file/modelo.joblib"
+    DESIRED_TIMEZONE = "timezone_here"   
     ```
 
    Certifique-se de ajustar os caminhos de acordo com a localização dos seus arquivos. O arquivo pode ser criado utilizando-se como base o arquivo .env.template.
@@ -62,7 +63,7 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
 
     Certifique-se de disponibilizar o modelo de machine learning adequado para aplicação, seguindo requisitos essenciais:
 
-    - Formato: `.joblib`
+    - Formato: `.joblib` `(1.1.0)`
     - Versão scikit-learn: `1.0.1`
 
     Arquitetura testada foi a LinearRegression, porém outras arquiteturas que recebam duas features de entrada também são compatíveis.
@@ -79,14 +80,18 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
 
     Como a aplicação roda diretamente no Uvicorn, não é necessário passar outros comandos de na CLI para rodar em modo produção usando Uvicorn, apenas modificar as variáveis de acordo no arquivo `.env`.
 
-- **Para iniciar o APP, com uso do WSIG Gunicorn, execute o seguinte comando:**
+- **Para iniciar o APP, com uso do Gunicorn, execute o seguinte comando:**
 
-    Você pode usar o WSIG web-server Gunicorn com workers Uvicorn para ganhar mais velocidade em modo produção. Para isso, execute o seguinte comando:
+    Você pode usar o web-server Gunicorn com workers Uvicorn para ganhar mais velocidade em modo produção. Para isso, execute o seguinte comando:
 
     ```bash
-    gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app -og-config log/log.ini
+    gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --log-config log/log.ini
     ```
     
+    Em que:
+
+    - `w` = Número de Uvicorn workers.
+
     A API estará acessível no endereço descrito no arquivo `.env` para variável `BASE_URL`. Por padrão, o caminho definido é [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
 ### Documentação
