@@ -10,7 +10,7 @@ gunicorn==21.2.0
 h11==0.14.0
 httptools==0.6.1
 idna==3.6
-joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1691577114857/work
+joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1633637554808/work
 numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1634853070724/work
 packaging==23.2
 pydantic==2.5.3
