@@ -5,6 +5,7 @@ from config import get_settings
 from sqlalchemy.orm import Session
 from . import models, schemas
 from database.database import SessionLocal, engine
+import pytz
 
 router = APIRouter()
 
@@ -30,7 +31,8 @@ async def predict(features: schemas.Features, db: Session = Depends(get_db)):
     :return: Prediction response.
     """
 
-    current_time = datetime.datetime.now().isoformat()
+    #current_time = datetime.datetime.now().isoformat()
+    current_time = datetime.datetime.now(pytz.timezone(get_settings().desired_timezone)).isoformat()
     model = joblib.load(get_settings().path_model)
 
     try:
