@@ -55,7 +55,9 @@ Como segunda opção, consultar o arquivo `requirements.txt`.
 
    Certifique-se de ajustar os caminhos de acordo com a localização dos seus arquivos. O arquivo pode ser criado utilizando-se como base o arquivo .env.template.
    
-   Essa aplicação possuí um arquivo `config.py` o qual carrega as informações definidas dentro do `.env` para cada modo ambiente de execução definido acima. O `config.py` também defini um backup para as variáveis de ambiente, você pode modificar se achar necessário.
+   Essa aplicação possuí um arquivo `config.py` o qual carrega as informações definidas dentro do `.env` para cada modo ambiente de execução definido acima. O `config.py` também defini um backup para as variáveis de ambiente, você pode modificar se achar necessário. 
+
+   Caso não seja fornecida uma `DESIRED_TIMEZONE` no arquivo `.env` será utilizado `Etc/UTC` para rodar a aplicação.
 
    Para os arquivos `db.sqlite3`, `modelo.joblib` e `log.txt`, você pode usar a estrutura de pastas recomendada.
 
