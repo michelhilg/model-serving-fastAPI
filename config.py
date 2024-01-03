@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     db_url: str = "sqlite:///./db.sqlt3"
     log_path: str = "log/log.txt"
     path_model: str = "model/modelo.joblib"
+    desired_timezone: str = "Etc/UTC"
 
     class Config:
         env_file = ".env"
